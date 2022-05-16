@@ -1,8 +1,8 @@
 FROM node:10
 
-ENV BACK_PORT 80
+ENV BACK_PORT 8080
 
-WORKDIR /app
+WORKDIR /code
 
 COPY package.json yarn.lock ./
 RUN yarn install
@@ -10,6 +10,6 @@ RUN yarn install
 COPY . .
 RUN NODE_ENV=production yarn build
 
-EXPOSE 80
+EXPOSE 8080
 
-CMD ["node", "/app/dist/server/index.js"]
+CMD ["node", "/code/dist/server/index.js"]
