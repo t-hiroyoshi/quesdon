@@ -64,7 +64,7 @@ router.post("/:id/answer", async (ctx) => {
             (question.answer!.length > 200
                 ? question.answer!.substring(0, 200) + "...(続きはリンク先で)"
                 : question.answer),
-            "\n#pquestion",
+            "\n#pquestion\n",
             answerUrl,
         ].join(""),
         visibility: ctx.request.body.fields.visibility,
