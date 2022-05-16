@@ -38,7 +38,7 @@ export class PageMySettings extends React.Component<{}, State> {
                     <Input type="textarea" name="description"
                         placeholder="しぶやのりんさんがすき"
                         onInput={this.inputDescription.bind(this)}
-                        defaultValue={me.description}/>
+                        defaultValue={me.description} />
                     <FormText>あと{this.descriptionRemaining()}文字 改行は表示時に反映されません</FormText>
                 </FormGroup>
                 <FormGroup>
@@ -47,7 +47,7 @@ export class PageMySettings extends React.Component<{}, State> {
                         <InputGroupAddon addonType="prepend">◯◯◯さんの</InputGroupAddon>
                         <Input type="text" name="questionBoxName" placeholder="質問箱"
                             onInput={this.inputQuestionBoxName.bind(this)}
-                            defaultValue={me.questionBoxName || "質問箱"}/>
+                            defaultValue={me.questionBoxName || "質問箱"} />
                     </InputGroup>
                     <FormText>あと{this.questionBoxNameRemaining()}文字 改行は表示時に反映されません</FormText>
                 </FormGroup>
@@ -61,13 +61,6 @@ export class PageMySettings extends React.Component<{}, State> {
                     保存{this.state.saving && "しています..."}
                 </Button>
             </form>
-            <h2 className="mt-3 mb-2">プッシュ通知</h2>
-            {me.pushbulletEnabled
-            ?   <Button color="warning" onClick={this.pushbulletDisconnect.bind(this)}>Pushbulletとの接続を解除する</Button>
-            :   <Button href="/api/web/accounts/pushbullet/redirect" color="success">
-                    Pushbulletと接続して新しい質問が来た際に通知を受け取る
-                </Button>
-            }
             <h2 className="mt-3 mb-2">やばいゾーン</h2>
             <Button color="danger" onClick={this.allDeleteQuestions.bind(this)}>自分宛ての質問を(回答済みのものも含めて)すべて削除</Button>
             <Button color="success" onClick={this.exportAnswers.bind(this)}>回答済みの質問を一括エクスポート</Button>
@@ -168,7 +161,7 @@ export class PageMySettings extends React.Component<{}, State> {
         function errorMsg(code: number | string) {
             return "通信に失敗しました。再度お試しください (" + code + ")"
         }
-        this.setState({saving: true})
+        this.setState({ saving: true })
 
         const form = new FormData(e.target)
         const req = await apiFetch("/api/web/accounts/update", {

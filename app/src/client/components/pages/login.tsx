@@ -24,34 +24,17 @@ export class PageLogin extends React.Component<{}, State> {
             <p>あなたのMastodonアカウントがあるインスタンスを入力してください。</p>
             <form action="javascript://" onSubmit={this.send.bind(this)}>
                 <FormGroup>
-                    <Input name="instance" placeholder="mastodon.social" list="major-instances"/>
+                    <Input name="instance" placeholder="mastodon.social" list="major-instances" value="community.4nonome.com" />
                     <datalist id="major-instances">
                         {majorInstances.map((instance) => <option value={instance} />)}
                     </datalist>
                 </FormGroup>
-                <Button type="submit" color="primary" disabled={loading}>{ loading ? "読み込み中" : "ログイン" }</Button>
+                <Button type="submit" color="primary" disabled={loading}>{loading ? "読み込み中" : "ログイン"}</Button>
                 {/* <span>&nbsp;もしくは&nbsp;</span>
                 <Button type="button" color="secondary" disabled={loading} onClick={this.twitterLogin.bind(this)}>
                     { loading ? "読み込み中" : "Twitterでログイン" }
                 </Button> */}
             </form>
-            <Alert color="danger" className="mt-3">
-                <h5>Twitterアカウントでのサービス提供終了について</h5>
-                <p>
-                    Twitterの開発者向けポリシー改定の影響で、QuesdonでのTwitterアカウントを利用したサービス提供を
-                    <strong>2018年9月30日</strong>
-                    に停止しま
-                    <del>す</del>
-                    した。
-                </p>
-                <p>これ以降は、TwitterアカウントでQuesdonにログインできなくなり、またTwitterアカウントで開設した質問箱で回答した質問等も閲覧できなくなります。</p>
-                <p>Mastodonアカウントへの質問データの移行は、該当するTwitterアカウントからTwitter
-                    <a href="https://twitter.com/quesdon">@quesdon</a>
-                    までダイレクトメッセージでお問い合わせください。
-                </p>
-                <p>ご利用ありがとうございました。</p>
-                <strong>なお、Mastodonアカウントでログインされているユーザーの皆様には影響はありません。</strong>これまで通りサービスをご利用いただけます。
-            </Alert>
         </div>
     }
 

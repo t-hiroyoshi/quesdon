@@ -23,8 +23,8 @@ export class PageMyFollowers extends React.Component<{}, State> {
 
     render() {
         return <div>
-            <Title>Quesdonを利用しているフォロワー一覧 - マイページ</Title>
-            <h1>Quesdonを利用しているフォロワー一覧</h1>
+            <Title>PQuestionを利用しているフォロワー一覧 - マイページ</Title>
+            <h1>PQuestionを利用しているフォロワー一覧</h1>
             <ul>
                 {this.state.accounts.map((user) => <li><UserLink {...user} /></li>)}
             </ul>
@@ -43,7 +43,7 @@ export class PageMyFollowers extends React.Component<{}, State> {
         function errorMsg(code: number | string) {
             return "読み込みに失敗しました。再度お試しください (" + code + ")"
         }
-        this.setState({loading: true})
+        this.setState({ loading: true })
         const param = this.state.maxId ? "?max_id=" + this.state.maxId : ""
         const req = await apiFetch("/api/web/accounts/followers" + param)
             .catch((e) => {

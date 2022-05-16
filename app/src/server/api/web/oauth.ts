@@ -15,17 +15,17 @@ router.post("/get_url", async (ctx) => {
     if (hostName === "twitter.com") {
         return ctx.throw("twitter service is finished.", 404)
     }
-    var app = await MastodonApp.findOne({hostName, appBaseUrl: BASE_URL, redirectUri})
+    var app = await MastodonApp.findOne({ hostName, appBaseUrl: BASE_URL, redirectUri })
     if (!app) {
         const res = await fetch("https://" + hostName + "/api/v1/apps", {
             method: "POST",
             body: JSON.stringify({
-                client_name: "Quesdon",
+                client_name: "PQuestion",
                 redirect_uris: redirectUri,
                 scopes: "read write",
                 website: BASE_URL,
             }),
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
         }).then((r) => r.json())
         app = new MastodonApp()
         app.clientId = res.client_id
@@ -36,7 +36,7 @@ router.post("/get_url", async (ctx) => {
         await app.save()
     }
     ctx.session!.loginState = rndstr() + "_" + app.id
-    const params: {[key: string]: string} = {
+    const params: { [key: string]: string } = {
         client_id: app.clientId,
         scope: "read+write",
         redirect_uri: redirectUri,
@@ -82,10 +82,10 @@ router.get("/redirect", async (ctx) => {
             code: ctx.query.code,
             state: ctx.query.state,
         }),
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
     }).then((r) => r.json())
-    const myProfile = await fetch("https://" + app.hostName + "/api/v1/accounts/verify_credentials",  {
-        headers: {Authorization: "Bearer " + res.access_token},
+    const myProfile = await fetch("https://" + app.hostName + "/api/v1/accounts/verify_credentials", {
+        headers: { Authorization: "Bearer " + res.access_token },
     }).then((r) => r.json())
     profile = {
         id: myProfile.id,
@@ -99,7 +99,7 @@ router.get("/redirect", async (ctx) => {
     }
     if (!profile) return
     const acct = profile.acct
-    var user = await User.findOne({acctLower: acct.toLowerCase()})
+    var user = await User.findOne({ acctLower: acct.toLowerCase() })
     if (user == null) {
         user = new User()
     }

@@ -20,14 +20,14 @@ export class Header extends React.Component<{}, State> {
     }
     render() {
         return <Navbar light expand="md" color="light"><Container>
-            <NavbarBrand to="/">Quesdon</NavbarBrand>
+            <NavbarBrand to="/">PQuestion</NavbarBrand>
             <NavbarToggler onClick={this.toggle.bind(this)} />
             <Collapse navbar isOpen={this.state.isOpen}>
                 <Nav className="mr-auto" navbar>
                     <NavItem>
                         {me
-                        ? <NavLink to="/my">@{me.acctDisplay}<QuestionRemaining/></NavLink>
-                        : <NavLink to="/login">ログイン</NavLink>}
+                            ? <NavLink to="/my">@{me.acctDisplay}<QuestionRemaining /></NavLink>
+                            : <NavLink to="/login">ログイン</NavLink>}
                     </NavItem>
                 </Nav>
             </Collapse>
@@ -35,6 +35,6 @@ export class Header extends React.Component<{}, State> {
     }
 
     toggle() {
-        this.setState({isOpen: !this.state.isOpen})
+        this.setState({ isOpen: !this.state.isOpen })
     }
 }

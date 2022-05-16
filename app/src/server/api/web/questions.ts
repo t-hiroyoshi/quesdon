@@ -14,7 +14,7 @@ router.get("/", async (ctx) => {
     const questions = await Question.find({
         user: mongoose.Types.ObjectId(ctx.session!.user),
         answeredAt: null,
-        isDeleted: {$ne: true},
+        isDeleted: { $ne: true },
     })
     ctx.body = JSON.stringify(questions)
 })
@@ -24,15 +24,15 @@ router.get("/count", async (ctx) => {
     const count = await Question.find({
         user: mongoose.Types.ObjectId(ctx.session!.user),
         answeredAt: null,
-        isDeleted: {$ne: true},
+        isDeleted: { $ne: true },
     }).count()
-    ctx.body = {count}
+    ctx.body = { count }
 })
 
 router.get("/latest", async (ctx) => {
     const questions = await Question.find({
-        answeredAt: {$ne: null},
-        isDeleted: {$ne: true},
+        answeredAt: { $ne: null },
+        isDeleted: { $ne: true },
     }).limit(20).sort("-answeredAt")
     ctx.body = questions
 })
@@ -50,7 +50,7 @@ router.post("/:id/answer", async (ctx) => {
     question.answeredAt = new Date()
     if (ctx.request.body.fields.isNSFW) question.isNSFW = true
     await question.save()
-    ctx.body = {status: "ok"}
+    ctx.body = { status: "ok" }
     const user = await User.findById(ctx.session!.user)
     if (!["public", "unlisted", "private"].includes(ctx.request.body.fields.visibility)) return
     if (!user) return
@@ -58,13 +58,13 @@ router.post("/:id/answer", async (ctx) => {
     const answerCharMax = 200
     const answerUrl = BASE_URL + "/@" + user!.acct + "/questions/" + question.id
     const body = {
-        spoiler_text: "Q. " + question.question + " #quesdon",
+        spoiler_text: "Q. " + question.question + " #pquestion",
         status: [
             "A. ",
             (question.answer!.length > 200
                 ? question.answer!.substring(0, 200) + "...(続きはリンク先で)"
                 : question.answer),
-            "\n#quesdon ",
+            "\n#pquestion",
             answerUrl,
         ].join(""),
         visibility: ctx.request.body.fields.visibility,
@@ -78,7 +78,7 @@ router.post("/:id/answer", async (ctx) => {
     }
     if (question.isNSFW) {
         body.status = "Q. " + question.question + "\n" + body.status
-        body.spoiler_text = "⚠ この質問は回答者がNSFWであると申告しています #quesdon"
+        body.spoiler_text = "⚠ この質問は回答者がNSFWであると申告しています #pquestion"
     }
     fetch("https://" + user!.acct.split("@")[1] + "/api/v1/statuses", {
         method: "POST",
@@ -100,7 +100,7 @@ router.post("/:id/delete", async (ctx) => {
     if (question.user._id != ctx.session!.user) return ctx.throw("not found", 404)
     question.isDeleted = true
     await question.save()
-    ctx.body = {status: "ok"}
+    ctx.body = { status: "ok" }
 })
 
 router.post("/:id/like", async (ctx) => {
@@ -108,14 +108,14 @@ router.post("/:id/like", async (ctx) => {
     const question = await Question.findById(ctx.params.id)
     if (!question) return ctx.throw("not found", 404)
     if (!question.answeredAt) return ctx.throw("not found", 404)
-    if (await QuestionLike.findOne({question})) return ctx.throw("already liked", 400)
+    if (await QuestionLike.findOne({ question })) return ctx.throw("already liked", 400)
     const like = new QuestionLike()
     like.question = question
     like.user = mongoose.Types.ObjectId(ctx.session!.user)
     await like.save()
-    question.likesCount = await QuestionLike.find({question}).count()
+    question.likesCount = await QuestionLike.find({ question }).count()
     await question.save()
-    ctx.body = {status: "ok"}
+    ctx.body = { status: "ok" }
 })
 
 router.post("/:id/unlike", async (ctx) => {
@@ -124,12 +124,12 @@ router.post("/:id/unlike", async (ctx) => {
     const user = mongoose.Types.ObjectId(ctx.session!.user)
     if (!question) return ctx.throw("not found", 404)
     if (!question.answeredAt) return ctx.throw("not found", 404)
-    const like = await QuestionLike.findOne({question, user})
+    const like = await QuestionLike.findOne({ question, user })
     if (!like) return ctx.throw("not liked", 400)
     await like.remove()
-    question.likesCount = await QuestionLike.find({question}).count()
+    question.likesCount = await QuestionLike.find({ question }).count()
     await question.save()
-    ctx.body = {status: "ok"}
+    ctx.body = { status: "ok" }
 })
 
 router.get("/:id", async (ctx) => {
@@ -151,19 +151,19 @@ router.post("/all_delete", async (ctx) => {
     }, {
         multi: true,
     })
-    ctx.body = {status: "ok"}
+    ctx.body = { status: "ok" }
 })
 
 router.post("/export", async (ctx) => {
     const user = await User.findById(ctx.session!.user)
     if (user == null) return ctx.throw("please login", 403)
     const base = user.acct.replace(/[^0-9a-zA-Z_]/g, "-")
-    const dir = `quesdon-archive-${base}-${Math.floor(new Date().getTime() / 1000)}`
+    const dir = `pquestion-archive-${base}-${Math.floor(new Date().getTime() / 1000)}`
     console.log(base)
     const q = await Question.find({
         user: mongoose.Types.ObjectId(ctx.session!.user),
-        answeredAt: {$ne: null},
-        isDeleted: {$ne: true},
+        answeredAt: { $ne: null },
+        isDeleted: { $ne: true },
     })
     const answersJs = `// Tips: 最初の二行を削るとJSONになるぞ!ならなかったらゴメン
 var answers =
@@ -190,7 +190,7 @@ ${JSON.stringify(user, null, 4)}
 <link rel="stylesheet" href="./static/bootstrap.min.css">
 <script src="./static/moment.min.js"></script>
 <script src="./static/main.js"></script>
-<!-- Thanks for using Quesdon -->
+<!-- Thanks for using PQuestion -->
 </head>
 <body>
 <div id="app">Loading...</div>

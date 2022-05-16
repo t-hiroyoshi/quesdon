@@ -32,13 +32,13 @@ export class PageMyQuestions extends React.Component<{}, State> {
             <Link to="/my">マイページへ</Link>
             <div className="mt-3">
                 {loading
-                    ? <Loading/>
+                    ? <Loading />
                     : loadFailed
-                        ?   <span>
-                            読み込みに失敗しました({ loadFailed < 0 ? loadFailed : "HTTP-" + loadFailed })。
+                        ? <span>
+                            読み込みに失敗しました({loadFailed < 0 ? loadFailed : "HTTP-" + loadFailed})。
                             <a href="javascript://" onClick={this.load.bind(this)}>再度読み込む</a>
-                            </span>
-                        : questions.map((q) => <Question {...q} hideAnswerUser key={q._id}/>)
+                        </span>
+                        : questions.map((q) => <Question {...q} hideAnswerUser key={q._id} />)
                 }
             </div>
             <Button href={this.getShareUrl()} color="secondary" target="_blank">
@@ -82,11 +82,11 @@ export class PageMyQuestions extends React.Component<{}, State> {
             return
         })
         if (!questions) return
-        this.setState({questions, loading: false})
+        this.setState({ questions, loading: false })
     }
     getShareUrl() {
         const user = (window as any).USER as APIUser
-        const text = `私の${user.questionBoxName || "質問箱"}です #quesdon ${location.origin}/@${user.acct}`
+        const text = `私の${user.questionBoxName || "質問箱"}です #pquestion ${location.origin}/@${user.acct}`
         return `https://${user.hostName}/${user.isTwitter ? "intent/tweet" : "share"}?text=${encodeURIComponent(text)}`
     }
 }
